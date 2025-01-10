@@ -20,11 +20,13 @@ jobs:
         id: trivy
         uses: reviewdog/action-trivy@v1
         with:
-          github_token: ${{ secrets.API_GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          # github_token: ${{ secrets.API_GITHUB_TOKEN }}
           trivy_command: config
           trivy_target: .
           working_directory: aws
-          reporter: github-pr-review
+          reporter: github-pr-check
+          # reporter: github-pr-review
           fail_on_error: true
           flags: '-tee -fail-level=any'
           # level: info

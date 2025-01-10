@@ -1,0 +1,34 @@
+name: Trivy Scan
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  trivy:
+    name: "Trivy"
+    if: github.ref != 'refs/heads/main' && github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run trivy with reviewdog output on the PR
+        id: trivy
+        uses: reviewdog/action-trivy@v1
+        with:
+          github_token: ${{ secrets.API_GITHUB_TOKEN }}
+          trivy_command: config
+          trivy_target: .
+          working_directory: aws
+          reporter: github-pr-review
+          fail_on_error: true
+          flags: '-tee -fail-level=any'
+          # level: info
+      - name: Output
+        run: |
+          echo "${{steps.trivy.outputs.trivy-return-code}}"
+          echo "${{steps.trivy.outputs.reviewdog-return-code}}"

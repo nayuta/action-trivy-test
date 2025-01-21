@@ -25,8 +25,8 @@ jobs:
           trivy_command: config
           trivy_target: .
           working_directory: aws
-          reporter: github-pr-check
-          # reporter: github-pr-review
+          # reporter: github-pr-check
+          reporter: github-pr-review
           fail_on_error: true
           flags: '-tee -fail-level=any'
           # level: info
